@@ -153,23 +153,23 @@ enable_testing()
 
 if(USE_MPI)
   add_test(NAME 3D_Sod_Parallel
-    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./3d_sod_parallel_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/3D_Sod_Parallel)
   add_test(NAME FlatPlate_Parallel
-    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./flatplate_parallel_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/FlatPlate_Parallel)
   add_test(NAME Ramp_Parallel
-    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./ramp_parallel_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/Ramp_Parallel)
 else()
   add_test(NAME 3D_Sod_Serial
-    COMMAND ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./3d_sod_serial_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/3D_Sod_Serial)
   add_test(NAME FlatPlate_Serial
-    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./flatplate_serial_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/FlatPlate_Serial)
   add_test(NAME Ramp_Serial
-    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    COMMAND bash ./ramp_serial_test.sh ${CMAKE_BINARY_DIR}/${EXE_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/Ramp_Serial)
 endif()
 
