@@ -73,7 +73,7 @@ if (KOKKOS_ENABLE_CUDA)
 endif()
 
 if (USE_MPI)
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_MPI" )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWITH_MPI=1 -DATOMICS_FLUX" )
 endif()
 
 ############################ Build Kokkos ######################################
@@ -150,7 +150,28 @@ target_link_libraries(${EXE_NAME}
 
 ############################ Testing ###########################################
 enable_testing()
-add_test(3D_Sod_Serial ${CMAKE_SOURCE_DIR}/tests/run_tests.sh ${CMAKE_BINARY_DIR}/${EXE_NAME})
+
+if(USE_MPI)
+  add_test(NAME 3D_Sod_Parallel
+    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/3D_Sod_Parallel)
+  add_test(NAME FlatPlate_Parallel
+    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/FlatPlate_Parallel)
+  add_test(NAME Ramp_Parallel
+    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/Ramp_Parallel)
+else()
+  add_test(NAME 3D_Sod_Serial
+    COMMAND ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/3D_Sod_Serial)
+  add_test(NAME FlatPlate_Serial
+    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/FlatPlate_Serial)
+  add_test(NAME Ramp_Serial
+    COMMAND mpirun -np 4 ${CMAKE_BINARY_DIR}/${EXE_NAME}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/Ramp_Serial)
+endif()
 
 ############################ PRINT CONFIGURE STATUS ############################
 
